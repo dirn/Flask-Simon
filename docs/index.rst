@@ -1,17 +1,22 @@
-Welcome to Flask-Simon's documentation!
-=======================================
-
-Contents:
-
-.. toctree::
-   :maxdepth: 2
+Flask-Simon
+===========
 
 
+Installation
+------------
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+Quickstart
+----------
 
+
+Configuration
+-------------
+
+
+API
+---
+
+
+Further Reading
+---------------
