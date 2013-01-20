@@ -4,6 +4,20 @@ Flask-Simon Examples
 
 Here are some exaples of using Flask-Simon
 
+
+Flaskr
+======
+
+Flaskr_ is the tutorial that ships with Flask. It uses SQLite as its
+database. The ``flaskr`` folder contains the Flaskr code modified to
+use Flask-Simon.
+
+The biggest change is all of the database setup work has been removed
+as Flask-Simon and MongoDB will take care of it for you.
+
+.. _Flaskr: http://flask.pocoo.org/docs/tutorial/
+
+
 Flask-Login
 ===========
 
