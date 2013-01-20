@@ -1,9 +1,8 @@
-__all__ = ('Simon',)
-
-import simon.connection
-
 from flask import abort
 from pymongo import uri_parser
+import simon.connection
+
+__all__ = ('Simon', 'get_or_404')
 
 
 class Simon(object):
