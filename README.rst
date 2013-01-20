@@ -1,5 +1,5 @@
 ============================================
-Flask Simon: Simple MongoDB Models for Flask
+Flask-Simon: Simple MongoDB Models for Flask
 ============================================
 
 .. image:: https://secure.travis-ci.org/dirn/Flask-Simon.png?branch=develop

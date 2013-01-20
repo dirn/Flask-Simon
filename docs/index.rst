@@ -1,6 +1,12 @@
 Flask-Simon
 ===========
 
+Simon_ is a library to help make working with MongoDB easier.
+Flask-Simon was created to make it even easier to use Simon_ with your
+Flask applications.
+
+.. _Simon: http://simon.readthedocs.org/
+
 
 Installation
 ------------
