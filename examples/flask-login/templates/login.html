@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <title>Flask-Simon and Flask-Login Example - Login</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    {%- for error in errors -%}
+        <p>{{ error }}</p>
+    {%- endfor -%}
+    <form method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" placeholder="Username">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Password">
+        <input type="submit" value="Log in">
+    </form>
+</body>
+</html>
