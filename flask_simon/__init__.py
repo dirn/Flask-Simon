@@ -1,3 +1,5 @@
+__version__ = '0.2.0'
+
 from flask import abort
 from pymongo import uri_parser
 import simon.connection
