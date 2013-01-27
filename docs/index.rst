@@ -68,14 +68,31 @@ database named after the Flask app.
 .. _MongoDB URI: http://docs.mongodb.org/manual/reference/connection-string/
 
 
+Routing
+-------
+
+Flask-Simon provides a custom converter to allow for the use of Object
+IDs in URLs.
+
+.. code-block:: python
+
+    @app.route('/<objectid:id>')
+
+More information about converters is availble in the `Flask API`_.
+
+.. _Flask API: http://flask.pocoo.org/docs/api/#url-route-registrations
+
+
 API
 ---
 
 .. automodule:: flask_simon
    :members:
 
-Full details of how to use :meth:`~flask_simon.get_or_404` can be found
-in the :meth:`Simon API <simon.Model.get>`.
+.. autoclass:: flask_simon.ObjectIDConverter
+
+Full details of how to query using :meth:`~flask_simon.get_or_404` can
+be found in the :meth:`Simon API <simon.Model.get>`.
 
 
 Further Reading

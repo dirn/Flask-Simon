@@ -1,10 +1,26 @@
 __version__ = '0.2.0'
 
+from bson.errors import InvalidId
+from bson.objectid import ObjectId
 from flask import abort
 from pymongo import uri_parser
 import simon.connection
+from werkzeug.routing import BaseConverter, ValidationError
 
 __all__ = ('Simon', 'get_or_404')
+
+
+class ObjectIDConverter(BaseConverter):
+    """Convert Object IDs for use in view routing URLs."""
+
+    def to_python(self, value):
+        try:
+            return ObjectId(value)
+        except (InvalidId, TypeError):
+            raise ValidationError
+
+    def to_url(self, value):
+        return str(value)
 
 
 class Simon(object):
@@ -26,6 +42,8 @@ class Simon(object):
 
         if 'simon' not in app.extensions:
             app.extensions['simon'] = {}
+
+        app.url_map.converters['objectid'] = ObjectIDConverter
 
         if 'MONGO_URI' in app.config:
             parsed = uri_parser.parse_uri(app.config['MONGO_URI'])

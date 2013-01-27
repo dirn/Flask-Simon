@@ -5,11 +5,16 @@ except ImportError:
 
 import mock
 
+from bson.objectid import ObjectId
 from flask import Flask
-from flask.ext.simon import Simon, get_or_404
+from flask.ext.simon import ObjectIDConverter, Simon, get_or_404
 from pymongo.errors import InvalidURI
 from simon.exceptions import MultipleDocumentsFound, NoDocumentFound
 from werkzeug.exceptions import NotFound
+from werkzeug.routing import ValidationError
+
+AN_OBJECT_ID_STR = '50d4dce70ea5fae6fb84e44b'
+AN_OBJECT_ID = ObjectId(AN_OBJECT_ID_STR)
 
 
 class TestSimon(unittest.TestCase):
@@ -78,6 +83,51 @@ class TestSimon(unittest.TestCase):
         simon = Simon()
         with self.assertRaises(ValueError):
             simon.init_app(self.app)
+
+
+class TestObjectIDConverter(unittest.TestCase):
+    def setUp(self):
+        self.app = Flask('test')
+        self.context = self.app.test_request_context('/')
+        self.context.push()
+
+    def tearDown(self):
+        self.context.pop()
+
+    def test_objectidconverter(self):
+        """Test that `objectid` is registered as a converter."""
+
+        Simon(self.app)
+
+        self.assertIn('objectid', self.app.url_map.converters)
+
+    def test_objectidconverter_to_python(self):
+        """Test the `ObjectIDConverter.to_python()` method."""
+
+        converter = ObjectIDConverter('/')
+
+        self.assertEqual(converter.to_python(AN_OBJECT_ID_STR), AN_OBJECT_ID)
+
+    def test_objectidconverter_to_url(self):
+        """Test the `ObjectIDConverter.to_url()` method."""
+
+        converter = ObjectIDConverter('/')
+
+        self.assertEqual(converter.to_url(AN_OBJECT_ID), AN_OBJECT_ID_STR)
+
+    def test_objectidconverter_validationerror(self):
+        ("Test that `ObjectIDConverter.to_python()` raises "
+         "`ValidationError`.")
+
+        converter = ObjectIDConverter('/')
+
+        with self.assertRaises(ValidationError):
+            # InvalidId
+            converter.to_python('00000000')
+
+        with self.assertRaises(ValidationError):
+            # TypeError
+            converter.to_python(1)
 
 
 class TestMiscellaneous(unittest.TestCase):
