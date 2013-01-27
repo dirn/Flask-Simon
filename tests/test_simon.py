@@ -82,7 +82,7 @@ class TestSimon(unittest.TestCase):
 
 class TestMiscellaneous(unittest.TestCase):
     def setUp(self):
-        self.app = Flask(__name__)
+        self.app = Flask('test')
         self.context = self.app.test_request_context('/')
         self.context.push()
 
