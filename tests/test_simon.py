@@ -97,7 +97,8 @@ class TestObjectIDConverter(unittest.TestCase):
     def test_objectidconverter(self):
         """Test that `objectid` is registered as a converter."""
 
-        Simon(self.app)
+        with mock.patch('simon.connection.connect'):
+            Simon(self.app)
 
         self.assertIn('objectid', self.app.url_map.converters)
 
