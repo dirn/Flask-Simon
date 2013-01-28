@@ -1,8 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 from flask.ext.login import (AnonymousUser, LoginManager, UserMixin,
                              login_required, login_user, logout_user)
-from flask.ext.simon import Simon
-from simon import Model
+from flask.ext.simon import Simon, Model
 
 app = Flask(__name__)
 app.secret_key = 'Keep this value secret'

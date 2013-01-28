@@ -1,7 +1,6 @@
 from flask import (Flask, request, session, redirect, url_for, abort,
                    render_template, flash)
-from flask.ext.simon import Simon
-from simon import Model
+from flask.ext.simon import Simon, Model
 
 
 app = Flask(__name__)
