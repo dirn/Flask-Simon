@@ -4,10 +4,10 @@ from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from flask import abort
 from pymongo import uri_parser
-import simon.connection
+from simon import Model, connection, geo, query
 from werkzeug.routing import BaseConverter, ValidationError
 
-__all__ = ('Simon', 'get_or_404')
+__all__ = ('Simon', 'get_or_404', 'Model', 'connection', 'geo', 'query')
 
 
 class ObjectIDConverter(BaseConverter):
@@ -61,14 +61,13 @@ class Simon(object):
             password = app.config['MONGO_PASSWORD']
             replica_set = app.config['REPLICA_SET']
 
-            simon.connection.connect(host_or_uri=host, name=name,
-                                     username=username, password=password,
-                                     replica_set=replica_set)
+            connection.connect(host_or_uri=host, name=name, username=username,
+                               password=password, replica_set=replica_set)
         else:
             host = app.config['HOST'] = 'localhost'
             name = app.config['MONGO_DBNAME'] = app.name
 
-            simon.connection.connect(host=host, name=name)
+            connection.connect(host=host, name=name)
 
 
 def get_or_404(model, *qs, **fields):
