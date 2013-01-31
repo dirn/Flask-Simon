@@ -44,7 +44,7 @@ class Simon(object):
         :type alias: str
 
         .. versionchanged:: 0.2.0
-           Added support for multiple databsaes
+           Added support for multiple databases
         .. versionadded:: 0.1.0
         """
 
