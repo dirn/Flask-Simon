@@ -105,7 +105,7 @@ IDs in URLs.
 
     @app.route('/<objectid:id>')
 
-More information about converters is availble in the `Flask API`_.
+More information about converters is available in the `Flask API`_.
 
 .. _Flask API: http://flask.pocoo.org/docs/api/#url-route-registrations
 
