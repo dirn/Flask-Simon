@@ -48,13 +48,15 @@ class TestSimon(unittest.TestCase):
         with mock.patch('simon.connection.connect') as connect:
             simon.init_app(self.app)
 
-            connect.assert_called_with(host='localhost', name='test',
-                                       alias=None)
+            connect.assert_called_with('localhost:27017', name='test',
+                                       alias=None, username=None,
+                                       password=None, replicaSet=None)
 
-            simon.init_app(self.app, alias='simon')
+            simon.init_app(self.app, prefix='SIMON', alias='simon')
 
-            connect.assert_called_with(host='localhost', name='test',
-                                       alias='simon')
+            connect.assert_called_with('localhost:27017', name='test',
+                                       alias='simon', username=None,
+                                       password=None, replicaSet=None)
 
     def test_init_app_invaliduri(self):
         """Test that `init_app()` raises `InvalidURI`."""
@@ -78,15 +80,15 @@ class TestSimon(unittest.TestCase):
         with mock.patch('simon.connection.connect') as connect:
             simon.init_app(self.app, prefix='MONGO')
 
-            connect.assert_called_with(host_or_uri=url1, name='simon',
-                                       alias=None, username='simonu',
-                                       password='simonp', replicaSet=None)
+            connect.assert_called_with(url1, name='simon', alias=None,
+                                       username='simonu', password='simonp',
+                                       replicaSet=None)
 
             simon.init_app(self.app, prefix='SIMON')
 
-            connect.assert_called_with(host_or_uri=url2, name='test',
-                                       alias=None, username='simonu',
-                                       password='simonp', replicaSet=None)
+            connect.assert_called_with(url2, name='test', alias=None,
+                                       username='simonu', password='simonp',
+                                       replicaSet=None)
 
     def test_init_app_prefix(self):
         """Test the `init_app()` method with a different prefix."""
@@ -98,9 +100,24 @@ class TestSimon(unittest.TestCase):
         with mock.patch('simon.connection.connect') as connect:
             simon.init_app(self.app, prefix='SIMON')
 
-            connect.assert_called_with(host_or_uri=url, name='test-simon',
-                                       alias=None, username='simonu',
-                                       password='simonp', replicaSet=None)
+            connect.assert_called_with(url, name='test-simon', alias=None,
+                                       username='simonu', password='simonp',
+                                       replicaSet=None)
+
+    def test_init_app_settings(self):
+        """Test the `init_app()` method with config settings."""
+
+        self.app.config['MONGO_HOST'] = 'localhost'
+        self.app.config['MONGO_PORT'] = 27017
+        self.app.config['MONGO_DBNAME'] = 'test-simon'
+
+        simon = Simon()
+        with mock.patch('simon.connection.connect') as connect:
+            simon.init_app(self.app)
+
+            connect.assert_called_with('localhost:27017', name='test-simon',
+                                       alias=None, username=None,
+                                       password=None, replicaSet=None)
 
     def test_init_app_uri(self):
         """Test the `init_app()` method with `MONGO_URI`."""
@@ -112,9 +129,9 @@ class TestSimon(unittest.TestCase):
         with mock.patch('simon.connection.connect') as connect:
             simon.init_app(self.app)
 
-            connect.assert_called_with(host_or_uri=url, name='test-simon',
-                                       alias=None, username='simonu',
-                                       password='simonp', replicaSet=None)
+            connect.assert_called_with(url, name='test-simon', alias=None,
+                                       username='simonu', password='simonp',
+                                       replicaSet=None)
 
     def test_init_app_valueerror(self):
         """Test that `init_app()` raises `ValueError`."""

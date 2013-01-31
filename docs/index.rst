@@ -56,16 +56,23 @@ Configuration
 :class:`~flask_simon.Simon` looks for the following in your Flask app's
 configuration:
 
-============= ==========================================================
-``MONGO_URI`` A `MongoDB URI`_ connection string specifying the database
-              connection.
-============= ==========================================================
-
-If the ``MONGO_URI`` configuration setting is not present,
-:class:`~flask_simon.Simon` will connect to ``localhost`` and use a
-database named after the Flask app.
+===================== ==================================================
+``MONGO_URI``         A `MongoDB URI`_ connection string specifying the
+                      database connection.
+``MONGO_HOST``        The hostname or IP address of the MongoDB server.
+                      default: 'localhost'
+``MONGO_PORT``        The port of the MongoDB server. default: 27017
+``MONGO_DNAME``       The name of the database on ``MONGO_HOST``.
+                      Default: ``app.name``
+``MONGO_USERNAME``    The username for authentication.
+``MONGO_PASSWORD``    The password for authentication.
+``MONGO_REPLICA_SET`` The name of the replica set.
+===================== ==================================================
 
 .. _MongoDB URI: http://docs.mongodb.org/manual/reference/connection-string/
+
+The ``MONGO_URI`` configuration setting will be used before checking
+any other settings. If it's not present, the others will be used.
 
 By default, :class:`~flask_simon.Simon` and
 :meth:`~flask_simon.Simon.init_app` will use ``MONGO`` as the prefix for

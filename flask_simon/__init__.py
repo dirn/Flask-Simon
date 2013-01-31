@@ -82,10 +82,32 @@ class Simon(object):
                                username=username, password=password,
                                replicaSet=replica_set)
         else:
-            host = app.config[prefixed('HOST')] = 'localhost'
-            name = app.config[prefixed('DBNAME')] = app.name
+            host_key = prefixed('HOST')
+            port_key = prefixed('PORT')
+            name_key = prefixed('DBNAME')
+            username_key = prefixed('USERNAME')
+            password_key = prefixed('PASSWORD')
+            replica_set_key = prefixed('REPLICA_SET')
 
-            connection.connect(host=host, name=name, alias=alias)
+            app.config.setdefault(host_key, 'localhost')
+            app.config.setdefault(port_key, 27017)
+            app.config.setdefault(name_key, app.name)
+
+            app.config.setdefault(username_key, None)
+            app.config.setdefault(password_key, None)
+            app.config.setdefault(replica_set_key, None)
+
+            host = app.config[host_key]
+            port = app.config[port_key]
+            name = app.config[name_key]
+            username = app.config[username_key]
+            password = app.config[password_key]
+            replica_set = app.config[replica_set_key]
+
+            host = '{0}:{1}'.format(host, port)
+
+        connection.connect(host, name=name, alias=alias, username=username,
+                           password=password, replicaSet=replica_set)
 
 
 def get_or_404(model, *qs, **fields):
