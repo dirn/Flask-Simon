@@ -67,6 +67,33 @@ database named after the Flask app.
 
 .. _MongoDB URI: http://docs.mongodb.org/manual/reference/connection-string/
 
+By default, :class:`~flask_simon.Simon` and
+:meth:`~flask_simon.Simon.init_app` will use ``MONGO`` as the prefix for
+all configuration settings. This can be overridden by specifying
+using the ``prefix`` argument.
+
+Specifying a value for ``prefix`` will allow for the use of multiple
+databases.
+
+.. code-block:: python
+
+    app = Flask(__name__)
+
+    app.config['MONGO_URI'] = 'mongodb://localhost/mongo'
+    app.config['SIMON_URI'] = 'mongodb://localhost/simon'
+
+    Simon(app)
+    Simon(app, prefix='SIMON')
+
+This will allow for the use of the ``mongo`` and ``simon`` databases on
+``localhost``. ``mongo`` will be available to models through the aliases
+``default`` and ``mongo``. ``simon`` will be available through the alias
+``simon``. This alias can be changed by using the ``alias`` arguments.
+
+.. code-block:: python
+
+    Simon(app, prefix='SIMON', alias='other-database')
+
 
 Routing
 -------
