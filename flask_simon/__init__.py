@@ -53,18 +53,18 @@ class Simon(object):
             app.config['MONGO_DBNAME'] = parsed['database']
             app.config['MONGO_USERNAME'] = parsed['username']
             app.config['MONGO_PASSWORD'] = parsed['password']
-            app.config['REPLICA_SET'] = parsed['options'].get('replica_set')
+            app.config['MONGO_REPLICA_SET'] = parsed['options'].get('replica_set')
 
             host = app.config['MONGO_URI']
             name = app.config['MONGO_DBNAME']
             username = app.config['MONGO_USERNAME']
             password = app.config['MONGO_PASSWORD']
-            replica_set = app.config['REPLICA_SET']
+            replica_set = app.config['MONGO_REPLICA_SET']
 
             connection.connect(host_or_uri=host, name=name, username=username,
                                password=password, replica_set=replica_set)
         else:
-            host = app.config['HOST'] = 'localhost'
+            host = app.config['MONGO_HOST'] = 'localhost'
             name = app.config['MONGO_DBNAME'] = app.name
 
             connection.connect(host=host, name=name)
