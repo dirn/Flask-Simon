@@ -37,9 +37,9 @@ class TestSimon(unittest.TestCase):
 
         with mock.patch.object(Simon, 'init_app') as init_app:
             # Simon.init_app() should be called with self.app
-            Simon(self.app)
+            Simon(self.app, 'MONGODB', 'simon')
 
-            init_app.assert_called_with(self.app)
+            init_app.assert_called_with(self.app, 'MONGODB', 'simon')
 
     def test_init_app(self):
         """Test the `init_app()` method."""
@@ -48,7 +48,13 @@ class TestSimon(unittest.TestCase):
         with mock.patch('simon.connection.connect') as connect:
             simon.init_app(self.app)
 
-            connect.assert_called_with(host='localhost', name='test')
+            connect.assert_called_with(host='localhost', name='test',
+                                       alias=None)
+
+            simon.init_app(self.app, alias='simon')
+
+            connect.assert_called_with(host='localhost', name='test',
+                                       alias='simon')
 
     def test_init_app_invaliduri(self):
         """Test that `init_app()` raises `InvalidURI`."""
@@ -59,6 +65,42 @@ class TestSimon(unittest.TestCase):
         simon = Simon()
         with self.assertRaises(InvalidURI):
             simon.init_app(self.app)
+
+    def test_init_app_multiple_connections(self):
+        """Test the `init_app()` method with multiple connections."""
+
+        url1 = 'mongodb://simonu:simonp@localhost:27017/simon'
+        self.app.config['MONGO_URI'] = url1
+        url2 = 'mongodb://simonu:simonp@localhost:27017/test'
+        self.app.config['SIMON_URI'] = url2
+
+        simon = Simon()
+        with mock.patch('simon.connection.connect') as connect:
+            simon.init_app(self.app, prefix='MONGO')
+
+            connect.assert_called_with(host_or_uri=url1, name='simon',
+                                       alias=None, username='simonu',
+                                       password='simonp', replicaSet=None)
+
+            simon.init_app(self.app, prefix='SIMON')
+
+            connect.assert_called_with(host_or_uri=url2, name='test',
+                                       alias=None, username='simonu',
+                                       password='simonp', replicaSet=None)
+
+    def test_init_app_prefix(self):
+        """Test the `init_app()` method with a different prefix."""
+
+        url = 'mongodb://simonu:simonp@localhost:27017/test-simon'
+        self.app.config['SIMON_URI'] = url
+
+        simon = Simon()
+        with mock.patch('simon.connection.connect') as connect:
+            simon.init_app(self.app, prefix='SIMON')
+
+            connect.assert_called_with(host_or_uri=url, name='test-simon',
+                                       alias=None, username='simonu',
+                                       password='simonp', replicaSet=None)
 
     def test_init_app_uri(self):
         """Test the `init_app()` method with `MONGO_URI`."""
@@ -71,8 +113,8 @@ class TestSimon(unittest.TestCase):
             simon.init_app(self.app)
 
             connect.assert_called_with(host_or_uri=url, name='test-simon',
-                                       username='simonu', password='simonp',
-                                       replica_set=None)
+                                       alias=None, username='simonu',
+                                       password='simonp', replicaSet=None)
 
     def test_init_app_valueerror(self):
         """Test that `init_app()` raises `ValueError`."""
@@ -81,8 +123,12 @@ class TestSimon(unittest.TestCase):
         self.app.config['MONGO_URI'] = url
 
         simon = Simon()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValueError) as e:
             simon.init_app(self.app)
+
+        expected = 'MONGO_URI does not contain a database name.'
+        actual = e.exception.message
+        self.assertEqual(actual, expected)
 
 
 class TestObjectIDConverter(unittest.TestCase):

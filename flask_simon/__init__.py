@@ -24,13 +24,13 @@ class ObjectIDConverter(BaseConverter):
 
 
 class Simon(object):
-    """Automatically creates a default connection for Simon models."""
+    """Automatically creates a connection for Simon models."""
 
-    def __init__(self, app=None):
+    def __init__(self, app=None, prefix='MONGO', alias=None):
         if app is not None:
-            self.init_app(app)
+            self.init_app(app, prefix, alias)
 
-    def init_app(self, app):
+    def init_app(self, app, prefix='MONGO', alias=None):
         """Initializes the Flask app for use with Simon.
 
         This method will automatically be called if the app is passed
@@ -38,6 +38,14 @@ class Simon(object):
 
         :param app: the Flask application.
         :type app: :class:`flask.Flask`
+        :param prefix: (optional) the prefix of the config settings
+        :type prefix: str
+        :param alias: the alias to use for the database connection
+        :type alias: str
+
+        .. versionchanged:: 0.2.0
+           Added support for multiple databsaes
+        .. versionadded:: 0.1.0
         """
 
         if 'simon' not in app.extensions:
@@ -45,29 +53,39 @@ class Simon(object):
 
         app.url_map.converters['objectid'] = ObjectIDConverter
 
-        if 'MONGO_URI' in app.config:
-            parsed = uri_parser.parse_uri(app.config['MONGO_URI'])
+        def prefixed(name):
+            """Prepends the prefix to the key name."""
+
+            return '{0}_{1}'.format(prefix, name)
+
+        # The URI key is accessed a few times, so be lazy and only
+        # generate the prefixed version once.
+        uri_key = prefixed('URI')
+
+        if uri_key in app.config:
+            parsed = uri_parser.parse_uri(app.config[uri_key])
             if not parsed.get('database'):
-                raise ValueError('MONGO_URI does not contain a database name.')
+                message = '{0} does not contain a database name.'
+                message = message.format(uri_key)
+                raise ValueError(message)
 
-            app.config['MONGO_DBNAME'] = parsed['database']
-            app.config['MONGO_USERNAME'] = parsed['username']
-            app.config['MONGO_PASSWORD'] = parsed['password']
-            app.config['MONGO_REPLICA_SET'] = parsed['options'].get('replica_set')
+            host = app.config[uri_key]
 
-            host = app.config['MONGO_URI']
-            name = app.config['MONGO_DBNAME']
-            username = app.config['MONGO_USERNAME']
-            password = app.config['MONGO_PASSWORD']
-            replica_set = app.config['MONGO_REPLICA_SET']
+            name = app.config[prefixed('DBNAME')] = parsed['database']
+            username = app.config[prefixed('USERNAME')] = parsed['username']
+            password = app.config[prefixed('PASSWORD')] = parsed['password']
 
-            connection.connect(host_or_uri=host, name=name, username=username,
-                               password=password, replica_set=replica_set)
+            replica_set = parsed['options'].get('replica_set', None)
+            app.config[prefixed('REPLICA_SET')] = replica_set
+
+            connection.connect(host_or_uri=host, name=name, alias=alias,
+                               username=username, password=password,
+                               replicaSet=replica_set)
         else:
-            host = app.config['MONGO_HOST'] = 'localhost'
-            name = app.config['MONGO_DBNAME'] = app.name
+            host = app.config[prefixed('HOST')] = 'localhost'
+            name = app.config[prefixed('DBNAME')] = app.name
 
-            connection.connect(host=host, name=name)
+            connection.connect(host=host, name=name, alias=alias)
 
 
 def get_or_404(model, *qs, **fields):
