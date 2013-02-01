@@ -3,11 +3,10 @@ try:
 except ImportError:
     import unittest
 
-import mock
-
 from bson.objectid import ObjectId
 from flask import Flask
 from flask.ext.simon import ObjectIDConverter, Simon, get_or_404
+import mock
 from pymongo.errors import InvalidURI
 from simon.exceptions import MultipleDocumentsFound, NoDocumentFound
 from werkzeug.exceptions import NotFound
