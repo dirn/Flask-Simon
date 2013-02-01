@@ -75,7 +75,7 @@ class Simon(object):
             username = app.config[prefixed('USERNAME')] = parsed['username']
             password = app.config[prefixed('PASSWORD')] = parsed['password']
 
-            replica_set = parsed['options'].get('replica_set', None)
+            replica_set = parsed['options'].get('replicaset', None)
             app.config[prefixed('REPLICA_SET')] = replica_set
 
             connection.connect(host_or_uri=host, name=name, alias=alias,

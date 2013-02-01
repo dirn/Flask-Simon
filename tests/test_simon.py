@@ -122,7 +122,8 @@ class TestSimon(unittest.TestCase):
     def test_init_app_uri(self):
         """Test the `init_app()` method with `MONGO_URI`."""
 
-        url = 'mongodb://simonu:simonp@localhost:27017/test-simon'
+        url = ('mongodb://simonu:simonp@localhost:27017/test-simon'
+               '?replicaSet=rs-simon')
         self.app.config['MONGO_URI'] = url
 
         simon = Simon()
@@ -131,7 +132,7 @@ class TestSimon(unittest.TestCase):
 
             connect.assert_called_with(url, name='test-simon', alias=None,
                                        username='simonu', password='simonp',
-                                       replicaSet=None)
+                                       replicaSet='rs-simon')
 
     def test_init_app_valueerror(self):
         """Test that `init_app()` raises `ValueError`."""
