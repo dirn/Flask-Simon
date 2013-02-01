@@ -77,10 +77,6 @@ class Simon(object):
 
             replica_set = parsed['options'].get('replicaset', None)
             app.config[prefixed('REPLICA_SET')] = replica_set
-
-            connection.connect(host_or_uri=host, name=name, alias=alias,
-                               username=username, password=password,
-                               replicaSet=replica_set)
         else:
             host_key = prefixed('HOST')
             port_key = prefixed('PORT')
