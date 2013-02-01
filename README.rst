@@ -9,7 +9,7 @@ Flask-Simon: Simple MongoDB Models for Flask
 Getting Started
 ===============
 
-Define a model::
+Connect to the database::
 
     from flask import Flask
     from flask.ext.simon import Simon
