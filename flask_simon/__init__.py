@@ -120,6 +120,7 @@ def get_or_404(model, *qs, **fields):
     :type \*qs: :class:`simon.query.Q`
     :param \*\*fields: keyword arguments specifying the query.
     :type \*\*fields: kwargs
+    :returns: :class:`~simon.Model` -- an instance of a model.
 
     .. versionadded: 0.1.0
     """
