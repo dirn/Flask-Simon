@@ -95,7 +95,7 @@ databases.
 This will allow for the use of the ``mongo`` and ``simon`` databases on
 ``localhost``. ``mongo`` will be available to models through the aliases
 ``default`` and ``mongo``. ``simon`` will be available through the alias
-``simon``. This alias can be changed by using the ``alias`` arguments.
+``simon``. This alias can be changed by using the ``alias`` argument.
 
 .. code-block:: python
 
