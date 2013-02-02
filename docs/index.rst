@@ -76,8 +76,8 @@ any other settings. If it's not present, the others will be used.
 
 By default, :class:`~flask_simon.Simon` and
 :meth:`~flask_simon.Simon.init_app` will use ``MONGO`` as the prefix for
-all configuration settings. This can be overridden by specifying
-using the ``prefix`` argument.
+all configuration settings. This can be overridden by using the
+``prefix`` argument.
 
 Specifying a value for ``prefix`` will allow for the use of multiple
 databases.
