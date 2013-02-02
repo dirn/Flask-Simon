@@ -40,7 +40,8 @@ class Simon(object):
         :type app: :class:`flask.Flask`
         :param prefix: (optional) the prefix of the config settings
         :type prefix: str
-        :param alias: the alias to use for the database connection
+        :param alias: (optional) the alias to use for the database
+                      connection
         :type alias: str
 
         .. versionchanged:: 0.2.0
