@@ -9,8 +9,7 @@ from flask.ext.simon import ObjectIDConverter, Simon, get_or_404
 import mock
 from pymongo.errors import InvalidURI
 from simon.exceptions import MultipleDocumentsFound, NoDocumentFound
-from werkzeug.exceptions import NotFound
-from werkzeug.routing import ValidationError
+from werkzeug.exceptions import BadRequest, NotFound
 
 AN_OBJECT_ID_STR = '50d4dce70ea5fae6fb84e44b'
 AN_OBJECT_ID = ObjectId(AN_OBJECT_ID_STR)
@@ -172,26 +171,26 @@ class TestObjectIDConverter(unittest.TestCase):
 
         self.assertEqual(converter.to_python(AN_OBJECT_ID_STR), AN_OBJECT_ID)
 
+    def test_objectidconverter_to_python_badrequest(self):
+        ("Test that `ObjectIDConverter.to_python()` raises "
+         "`BadRequest`.")
+
+        converter = ObjectIDConverter('/')
+
+        with self.assertRaises(BadRequest):
+            # InvalidId
+            converter.to_python('00000000')
+
+        with self.assertRaises(BadRequest):
+            # TypeError
+            converter.to_python(1)
+
     def test_objectidconverter_to_url(self):
         """Test the `ObjectIDConverter.to_url()` method."""
 
         converter = ObjectIDConverter('/')
 
         self.assertEqual(converter.to_url(AN_OBJECT_ID), AN_OBJECT_ID_STR)
-
-    def test_objectidconverter_validationerror(self):
-        ("Test that `ObjectIDConverter.to_python()` raises "
-         "`ValidationError`.")
-
-        converter = ObjectIDConverter('/')
-
-        with self.assertRaises(ValidationError):
-            # InvalidId
-            converter.to_python('00000000')
-
-        with self.assertRaises(ValidationError):
-            # TypeError
-            converter.to_python(1)
 
 
 class TestMiscellaneous(unittest.TestCase):

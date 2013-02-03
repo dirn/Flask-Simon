@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from flask import abort
 from pymongo import uri_parser
 from simon import Model, connection, geo, query
-from werkzeug.routing import BaseConverter, ValidationError
+from werkzeug.routing import BaseConverter
 
 __all__ = ('Simon', 'get_or_404', 'Model', 'connection', 'geo', 'query')
 
@@ -17,7 +17,7 @@ class ObjectIDConverter(BaseConverter):
         try:
             return ObjectId(value)
         except (InvalidId, TypeError):
-            raise ValidationError
+            abort(400)
 
     def to_url(self, value):
         return str(value)
