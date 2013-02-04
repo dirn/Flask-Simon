@@ -104,7 +104,7 @@ class Simon(object):
             host = '{0}:{1}'.format(host, port)
 
         connection.connect(host, name=name, alias=alias, username=username,
-                           password=password, replicaSet=replica_set)
+                           password=password, replica_set=replica_set)
 
 
 def get_or_404(model, *qs, **fields):

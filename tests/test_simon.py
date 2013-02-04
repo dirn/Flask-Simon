@@ -48,13 +48,13 @@ class TestSimon(unittest.TestCase):
 
             connect.assert_called_with('localhost:27017', name='test',
                                        alias=None, username=None,
-                                       password=None, replicaSet=None)
+                                       password=None, replica_set=None)
 
             simon.init_app(self.app, prefix='SIMON', alias='simon')
 
             connect.assert_called_with('localhost:27017', name='test',
                                        alias='simon', username=None,
-                                       password=None, replicaSet=None)
+                                       password=None, replica_set=None)
 
     def test_init_app_invaliduri(self):
         """Test that `init_app()` raises `InvalidURI`."""
@@ -80,13 +80,13 @@ class TestSimon(unittest.TestCase):
 
             connect.assert_called_with(url1, name='simon', alias=None,
                                        username='simonu', password='simonp',
-                                       replicaSet=None)
+                                       replica_set=None)
 
             simon.init_app(self.app, prefix='SIMON')
 
             connect.assert_called_with(url2, name='test', alias=None,
                                        username='simonu', password='simonp',
-                                       replicaSet=None)
+                                       replica_set=None)
 
     def test_init_app_prefix(self):
         """Test the `init_app()` method with a different prefix."""
@@ -100,7 +100,7 @@ class TestSimon(unittest.TestCase):
 
             connect.assert_called_with(url, name='test-simon', alias=None,
                                        username='simonu', password='simonp',
-                                       replicaSet=None)
+                                       replica_set=None)
 
     def test_init_app_settings(self):
         """Test the `init_app()` method with config settings."""
@@ -115,7 +115,7 @@ class TestSimon(unittest.TestCase):
 
             connect.assert_called_with('localhost:27017', name='test-simon',
                                        alias=None, username=None,
-                                       password=None, replicaSet=None)
+                                       password=None, replica_set=None)
 
     def test_init_app_uri(self):
         """Test the `init_app()` method with `MONGO_URI`."""
@@ -130,7 +130,7 @@ class TestSimon(unittest.TestCase):
 
             connect.assert_called_with(url, name='test-simon', alias=None,
                                        username='simonu', password='simonp',
-                                       replicaSet='rs-simon')
+                                       replica_set='rs-simon')
 
     def test_init_app_valueerror(self):
         """Test that `init_app()` raises `ValueError`."""

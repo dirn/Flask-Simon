@@ -20,7 +20,7 @@ setup(
     packages=['flask_simon'],
     package_data={'': ['LICENSE', 'README.rst']},
     include_package_data=True,
-    install_requires=['flask>=0.8', 'pymongo>=2.1', 'simon'],
+    install_requires=['flask>=0.8', 'pymongo>=2.1', 'simon>=0.2'],
     tests_require=['coverage', 'mock', 'nose'],
     license=open('LICENSE').read(),
     classifiers=(
