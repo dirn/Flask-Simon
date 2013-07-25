@@ -4,7 +4,9 @@ from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from flask import abort
 from pymongo import uri_parser
-from simon import Model, connection, geo, query
+# The following line is for convenience.
+from simon import Model, connection, geo, query  # NOQA
+from simon.exceptions import MultipleDocumentsFound, NoDocumentFound
 from werkzeug.routing import BaseConverter
 
 __all__ = ('Simon', 'get_or_404', 'Model', 'connection', 'geo', 'query')
@@ -127,5 +129,5 @@ def get_or_404(model, *qs, **fields):
 
     try:
         return model.get(*qs, **fields)
-    except (model.NoDocumentFound, model.MultipleDocumentsFound):
+    except (NoDocumentFound, MultipleDocumentsFound):
         abort(404)

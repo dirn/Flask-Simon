@@ -143,7 +143,7 @@ class TestSimon(unittest.TestCase):
             simon.init_app(self.app)
 
         expected = 'MONGO_URI does not contain a database name.'
-        actual = e.exception.message
+        actual = '{0}'.format(e.exception)
         self.assertEqual(actual, expected)
 
 
