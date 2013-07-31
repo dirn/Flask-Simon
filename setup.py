@@ -2,9 +2,6 @@
 
 from setuptools import setup
 
-import os
-import sys
-
 setup(
     name='Flask-Simon',
     version='0.4.0',
