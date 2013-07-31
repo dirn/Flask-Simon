@@ -8,5 +8,4 @@ install:
   - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pip install unittest2 --use-mirrors; fi
   - pip install -r tests/requirements.txt
   - pip install .
-  - pip install https://github.com/dirn/Simon/tarball/python3
 script: nosetests -q tests
