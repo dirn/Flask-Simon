@@ -5,10 +5,6 @@ from setuptools import setup
 import os
 import sys
 
-if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist upload')
-    sys.exit()
-
 setup(
     name='Flask-Simon',
     version='0.3.0',
