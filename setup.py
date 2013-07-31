@@ -7,7 +7,7 @@ import sys
 
 setup(
     name='Flask-Simon',
-    version='0.3.0',
+    version='0.4.0',
     description='Simple MongoDB Models for Flask',
     long_description=open('README.rst').read(),
     author='Andy Dirnberger',
